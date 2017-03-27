@@ -61,4 +61,17 @@ Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-*.VC
+/Binaries
+
+/DerivedDataCache
+
+/Intermediate
+
+/Saved
+
+*.sln
+
+*.sdf
+
+*.suo
+
