@@ -25,9 +25,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TSubclassOf<class AEnemyController> EnemyBlueprint;
 
+	int PlayerLife = 3;
+
 	float EnemyTimer;
 	float GameTimer;
 
+	void DecrementLife();
 	void IncrementScore();
 	void OnGameOver();
 

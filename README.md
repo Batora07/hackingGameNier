@@ -14,9 +14,15 @@ Here are a few examples of what I'm trying to achieve with this project :
 
 [![HackingMiniGame02](img/img02.jpg)](img/img02.jpg)
 
+Done : 
+
+- (28/03/17) : Playable prototype on which the game will be build
+- (29/03/17) : Camera now following the player (done with BP)
+- (29/03/17) : Player Projectiles (material), 3 Life for the Player (C++ & GUI text Widget)
+
 TODO (started 28/03/17) :
 
-- --Change the camera and make it follow the player with Lerp (linear interpolation)-- Done
+- ~~Change the camera and make it follow the player with Lerp (linear interpolation)~~ Done
 - create different types of enemies (protected, turrets, following enemies)
 - create new materials/textures/UI similar to the original game
 - create obstacles (and obstacles that can damage the player)
@@ -24,7 +30,3 @@ TODO (started 28/03/17) :
 - Add multiple levels
 - Change the assets for the player, enemies, obstacles and bullets/projectiles 
 
-Done : 
-
-- (28/03/17) : Playable prototype on which the game will be build
-- (29/03/17) : Camera now following the player (done with BP)

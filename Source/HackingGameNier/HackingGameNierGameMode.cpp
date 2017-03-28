@@ -2,6 +2,7 @@
 
 #include "HackingGameNier.h"
 #include "HackingGameNierGameMode.h"
+#include "ShipController.h"
 #include "EnemyController.h"
 #include "GameWidget.h"
 
@@ -44,6 +45,13 @@ void AHackingGameNierGameMode::ChangeMenuWidget(TSubclassOf<UUserWidget> NewWidg
 		if (CurrentWidget != nullptr) {
 			CurrentWidget->AddToViewport();
 		}
+	}
+}
+
+void AHackingGameNierGameMode::DecrementLife() {
+	if (PlayerLife > 0) {
+		PlayerLife--;
+		((UGameWidget*)CurrentWidget)->SetLife(PlayerLife);
 	}
 }
 

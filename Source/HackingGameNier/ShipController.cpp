@@ -57,6 +57,7 @@ void AShipController::Move_YAxis(float AxisValue) {
 	CurrentVelocity.Y = AxisValue * 100.0f;
 }
 
+// Player pressed fire command => shoot bullet
 void AShipController::OnShoot() {
 	UWorld* World = GetWorld();
 	if (World) {
@@ -65,15 +66,25 @@ void AShipController::OnShoot() {
 	}
 }
 
+// Player get hit
 void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor * OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	// colliding with an enemy
 	if (OtherActor->IsA(AEnemyController::StaticClass())) {
-		Died = true;
-		this->SetActorHiddenInGame(true);
-		UGameplayStatics::SetGamePaused(GetWorld(), true);
-		((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->OnGameOver();
+		//  Player Life > 1 => life--
+		if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife > 1) {
+			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->DecrementLife();
+		}
+		// Player died
+		else {
+			Died = true;
+			this->SetActorHiddenInGame(true);
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->OnGameOver();
+		}
 	}
 }
 
+// Restart the scene
 void AShipController::OnRestart() {
 	if (Died) {
 		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);

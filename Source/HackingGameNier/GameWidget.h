@@ -22,9 +22,12 @@ public:
 	void Load();
 
 	void SetScore(int score);
+	void SetLife(int life);
 	void OnGameOver(int score);
 
 	UPROPERTY()
 		UTextBlock* ScoreText;
 	
+	UPROPERTY()
+		UTextBlock* LifeText;
 };
