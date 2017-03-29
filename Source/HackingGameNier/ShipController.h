@@ -32,13 +32,19 @@ public:
 	
 	void Move_XAxis(float AxisValue);
 	void Move_YAxis(float AxisValue);
+	void Turn(float AxisValue);
+
+	// Player pressed fire command => shoot bullet
 	void OnShoot();
+
+	// Restart the scene
 	void OnRestart();
 
 	FVector CurrentVelocity;
-
-	bool Died;
 	
+	bool Died;
+
+	// Player get hit
 	UFUNCTION()
 		void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor * OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

@@ -45,6 +45,7 @@ void AShipController::SetupPlayerInputComponent(class UInputComponent* InputComp
 
 	InputComponent->BindAxis("MoveX", this, &AShipController::Move_XAxis);
 	InputComponent->BindAxis("MoveY", this, &AShipController::Move_YAxis);
+	InputComponent->BindAxis("Turn", this, &AShipController::Turn);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
 	InputComponent->BindAction("Restart", IE_Pressed, this, &AShipController::OnRestart).bExecuteWhenPaused = true;
 }
@@ -57,21 +58,28 @@ void AShipController::Move_YAxis(float AxisValue) {
 	CurrentVelocity.Y = AxisValue * 100.0f;
 }
 
-// Player pressed fire command => shoot bullet
+void AShipController::Turn(float AxisValue)
+{
+	FRotator NewRotation = GetActorRotation();
+	NewRotation.Yaw += AxisValue;
+	SetActorRotation(NewRotation);
+}
+
 void AShipController::OnShoot() {
 	UWorld* World = GetWorld();
 	if (World) {
 		FVector Location = GetActorLocation();
-		World->SpawnActor<ABulletController>(BulletBlueprint, Location, FRotator::ZeroRotator);
+		World->SpawnActor<ABulletController>(BulletBlueprint, Location, GetActorRotation());
 	}
 }
 
-// Player get hit
 void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor * OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	// colliding with an enemy
 	if (OtherActor->IsA(AEnemyController::StaticClass())) {
 		//  Player Life > 1 => life--
 		if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife > 1) {
+			// The player looses a pod corresponding as a life
+			// TODO : disable a LifeX pod, X corresponding to the actual PlayerLife
 			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->DecrementLife();
 		}
 		// Player died
@@ -84,7 +92,6 @@ void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	}
 }
 
-// Restart the scene
 void AShipController::OnRestart() {
 	if (Died) {
 		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
