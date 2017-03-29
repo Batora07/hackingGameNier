@@ -79,7 +79,27 @@ void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		//  Player Life > 1 => life--
 		if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife > 1) {
 			// The player looses a pod corresponding as a life
-			// TODO : disable a LifeX pod, X corresponding to the actual PlayerLife
+			RootComponent->GetChildrenComponents(true, ChildArray);
+			// remove pod life3
+			if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife == 3) {
+				// get pod life3
+				if (ChildArray[2] != NULL)
+				{
+					USceneComponent* ChildComp = ChildArray[2];
+					ChildArray[2]->SetVisibility(false, true);
+					//UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+				}
+			}
+			// remove pod life2
+			else if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife == 2) {
+				// Get pod life2
+				if (ChildArray[1] != NULL)
+				{
+					USceneComponent* ChildComp = ChildArray[1];
+					ChildArray[1]->SetVisibility(false, true);
+					//UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+				}
+			}
 			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->DecrementLife();
 		}
 		// Player died
