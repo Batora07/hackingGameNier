@@ -30,6 +30,7 @@ void ABulletController::Tick( float DeltaTime )
 
 	FVector NewLocation = GetActorLocation();
 	NewLocation.X += Speed * DeltaTime;
+
 	SetActorLocation(NewLocation);
 
 	if (NewLocation.X > 600.0f) {
