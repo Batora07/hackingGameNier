@@ -29,7 +29,19 @@ void ABulletController::Tick( float DeltaTime )
 	Super::Tick( DeltaTime );
 
 	FVector NewLocation = GetActorLocation();
-	NewLocation.X += Speed * DeltaTime;
+	float YawAngle = GetActorRotation().Yaw;
+	
+	//NewLocation.Y += Speed * DeltaTime * YawAngle.Yaw;
+	// V.x = cos(A)
+	// V.y = sin(A)
+	
+	float radian = (PI * YawAngle) / 180.0f;
+
+	float Vx = cos(radian) * Speed;
+	float Vy = sin(radian) * Speed;
+	NewLocation.X += Vx * DeltaTime;
+	NewLocation.Y += Vy * DeltaTime;
+	UE_LOG(LogTemp, Warning, TEXT("Radian : %f "), radian);
 
 	SetActorLocation(NewLocation);
 

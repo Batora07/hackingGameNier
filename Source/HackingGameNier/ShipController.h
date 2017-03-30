@@ -39,12 +39,17 @@ public:
 	// Player pressed fire command => shoot bullet
 	void OnShoot();
 
+	// Player stop firing 
+	void OnReleaseShoot();
+
 	// Restart the scene
 	void OnRestart();
 
 	FVector CurrentVelocity;
 	
 	bool Died;
+
+	bool Shooting;
 
 	// Player get hit
 	UFUNCTION()

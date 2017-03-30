@@ -18,13 +18,13 @@ AShipController::AShipController()
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AShipController::OnOverlap);
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+	Shooting = false;
 }
 
 // Called when the game starts or when spawned
 void AShipController::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -47,6 +47,7 @@ void AShipController::SetupPlayerInputComponent(class UInputComponent* InputComp
 	InputComponent->BindAxis("MoveY", this, &AShipController::Move_YAxis);
 	InputComponent->BindAxis("Turn", this, &AShipController::Turn);
 	InputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
+	InputComponent->BindAction("Shoot", IE_Released, this, &AShipController::OnReleaseShoot);
 	InputComponent->BindAction("Restart", IE_Pressed, this, &AShipController::OnRestart).bExecuteWhenPaused = true;
 }
 
@@ -66,12 +67,23 @@ void AShipController::Turn(float AxisValue)
 }
 
 void AShipController::OnShoot() {
-	UWorld* World = GetWorld();
-	if (World) {
-		FVector Location = GetActorLocation();
-		World->SpawnActor<ABulletController>(BulletBlueprint, Location, GetActorRotation());
-	}
+	Shooting = true;
+	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %b"), Shooting);
+
+	//while (Shooting) {
+		UWorld* World = GetWorld();
+		if (World) {
+			FVector Location = GetActorLocation();
+			World->SpawnActor<ABulletController>(BulletBlueprint, Location, GetActorRotation());
+		}
+//	}
 }
+
+void AShipController::OnReleaseShoot() {
+	Shooting = false;
+	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %b"), Shooting);
+}
+
 
 void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor * OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	// colliding with an enemy
