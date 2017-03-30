@@ -83,21 +83,26 @@ void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 			// remove pod life3
 			if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife == 3) {
 				// get pod life3
-				if (ChildArray[2] != NULL)
-				{
-					USceneComponent* ChildComp = ChildArray[2];
-					ChildArray[2]->SetVisibility(false, true);
-					//UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+				for (int i = 0; i<ChildArray.Num(); ++i) {
+					if (ChildArray[i]->GetName() == "Life3")
+					{
+						//GetName() 
+						USceneComponent* ChildComp = ChildArray[i];
+						ChildArray[i]->SetVisibility(false, true);
+						UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+					}
 				}
 			}
 			// remove pod life2
 			else if (((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->PlayerLife == 2) {
 				// Get pod life2
-				if (ChildArray[1] != NULL)
-				{
-					USceneComponent* ChildComp = ChildArray[1];
-					ChildArray[1]->SetVisibility(false, true);
-					//UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+				for (int i = 0; i<ChildArray.Num(); ++i) {
+					if (ChildArray[i]->GetName() == "Life2")
+					{
+						USceneComponent* ChildComp = ChildArray[i];
+						ChildArray[i]->SetVisibility(false, true);
+						UE_LOG(LogTemp, Warning, TEXT("Component: %s"), *ChildComp->GetName());
+					}
 				}
 			}
 			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->DecrementLife();
