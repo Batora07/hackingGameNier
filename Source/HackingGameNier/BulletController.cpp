@@ -41,11 +41,9 @@ void ABulletController::Tick( float DeltaTime )
 	float Vy = sin(radian) * Speed;
 	NewLocation.X += Vx * DeltaTime;
 	NewLocation.Y += Vy * DeltaTime;
-	UE_LOG(LogTemp, Warning, TEXT("Radian : %f "), radian);
-
 	SetActorLocation(NewLocation);
 
-	if (NewLocation.X > 600.0f) {
+	if (NewLocation.X > 1500.0f || NewLocation.X < -1500.0f || NewLocation.Y > 1500.0f || NewLocation.Y < -1500.0f) {
 		this->Destroy();
 	}
 

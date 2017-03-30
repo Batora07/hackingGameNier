@@ -26,7 +26,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		UShapeComponent* CollisionBox;
 	UPROPERTY(EditAnywhere)
-		float Speed = 10.0f;
+		float Speed = 15.0f;
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 		TSubclassOf<class ABulletController> BulletBlueprint;
 

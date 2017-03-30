@@ -68,7 +68,7 @@ void AShipController::Turn(float AxisValue)
 
 void AShipController::OnShoot() {
 	Shooting = true;
-	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %b"), Shooting);
+	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), Shooting);
 
 	//while (Shooting) {
 		UWorld* World = GetWorld();
@@ -81,7 +81,7 @@ void AShipController::OnShoot() {
 
 void AShipController::OnReleaseShoot() {
 	Shooting = false;
-	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %b"), Shooting);
+	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), Shooting);
 }
 
 
