@@ -45,11 +45,16 @@ public:
 	// Restart the scene
 	void OnRestart();
 
+	// create the projectile when the player use the shoot key
+	void CreateProjectile();
+
 	FVector CurrentVelocity;
 	
-	bool Died;
+	bool bDied;
 
-	bool Shooting;
+	bool bShooting;
+
+	FTimerHandle shootingDelay;
 
 	// Player get hit
 	UFUNCTION()

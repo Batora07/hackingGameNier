@@ -18,7 +18,7 @@ AShipController::AShipController()
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AShipController::OnOverlap);
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-	Shooting = false;
+	bShooting = false;
 }
 
 // Called when the game starts or when spawned
@@ -46,8 +46,8 @@ void AShipController::SetupPlayerInputComponent(class UInputComponent* InputComp
 	InputComponent->BindAxis("MoveX", this, &AShipController::Move_XAxis);
 	InputComponent->BindAxis("MoveY", this, &AShipController::Move_YAxis);
 	InputComponent->BindAxis("Turn", this, &AShipController::Turn);
-	InputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
 	InputComponent->BindAction("Shoot", IE_Released, this, &AShipController::OnReleaseShoot);
+	InputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
 	InputComponent->BindAction("Restart", IE_Pressed, this, &AShipController::OnRestart).bExecuteWhenPaused = true;
 }
 
@@ -67,21 +67,24 @@ void AShipController::Turn(float AxisValue)
 }
 
 void AShipController::OnShoot() {
-	Shooting = true;
-	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), Shooting);
+	bShooting = true;
+	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), bShooting);
 
-	//while (Shooting) {
-		UWorld* World = GetWorld();
-		if (World) {
-			FVector Location = GetActorLocation();
-			World->SpawnActor<ABulletController>(BulletBlueprint, Location, GetActorRotation());
-		}
-//	}
+	GetWorldTimerManager().SetTimer(shootingDelay, this, &AShipController::CreateProjectile, 0.2f, bShooting);
+}
+
+void AShipController::CreateProjectile() {
+	UWorld* World = GetWorld();
+	if (World) {
+		FVector Location = GetActorLocation();
+		World->SpawnActor<ABulletController>(BulletBlueprint, Location, GetActorRotation());
+	}
 }
 
 void AShipController::OnReleaseShoot() {
-	Shooting = false;
-	UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), Shooting);
+	bShooting = false;
+	GetWorldTimerManager().ClearTimer(shootingDelay);
+	//UE_LOG(LogTemp, Warning, TEXT("SHOOTING : %d"), bShooting);
 }
 
 
@@ -121,7 +124,7 @@ void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		}
 		// Player died
 		else {
-			Died = true;
+			bDied = true;
 			this->SetActorHiddenInGame(true);
 			UGameplayStatics::SetGamePaused(GetWorld(), true);
 			((AHackingGameNierGameMode*)GetWorld()->GetAuthGameMode())->OnGameOver();
@@ -130,7 +133,7 @@ void AShipController::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 }
 
 void AShipController::OnRestart() {
-	if (Died) {
+	if (bDied) {
 		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 	}
 }
